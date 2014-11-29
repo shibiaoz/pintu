@@ -1,4 +1,8 @@
 .main{
 	border: solid 1px red;	
 	margin: 0 auto;
+	position: absolute;
+	width: 270px;
+	height: 270px;
+	top: 0px;
 }
