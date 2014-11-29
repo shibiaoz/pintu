@@ -105,6 +105,7 @@ Game.prototype = {
 		},false);
 	},
 	touchStart:function  (ev) {
+		ev.preventDefault();
 		var self = this;
 		var touch = event.touches[0],
          	startX = touch.pageX,
@@ -116,6 +117,7 @@ Game.prototype = {
 	},
 	//移动事件，所处当前点击对象和所要移动的目的对象的索引
 	touchMove:function(ev){
+		ev.preventDefault();
 		var self = this;
 		var touch = event.touches[0],
          	endX = touch.pageX,
