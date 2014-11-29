@@ -1,0 +1,38 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta content="width=device-width,initial-scale=1,user-scalable=no" name="viewport">
+	<meta name="format-detection" content="telephone=no" >
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<title>html5-canvas拼图游戏</title>
+	<link rel="stylesheet" type="text/css" href="css/index.css">
+</head>
+<body>
+	<canvas id="canvas" class="main" width="270" height="270"></canvas>
+	<script type="text/javascript" src="js/jquery.js"></script>
+	<script type="text/javascript" src="js/tools.js"></script>
+	<script type="text/javascript" src="js/index.js"></script>
+	<script type="text/javascript">
+		var canvas = document.getElementById('canvas');
+		var context = canvas.getContext('2d');
+		new Game({
+			canvas:canvas,
+			ctx:context,
+			size:2,
+			pic:'img/270.jpg',
+			picWidth:270,
+			picHeight:270
+		})
+		/*new Game({
+			canvas:canvas,
+			ctx:context,
+			size:3,
+			pic:'img/ball_baby.jpg',
+			picWidth:330,
+			picHeight:330
+		})*/
+	</script>
+</body>
+</html>
