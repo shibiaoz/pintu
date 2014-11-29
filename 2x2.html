@@ -11,19 +11,31 @@
 </head>
 <body>
 	<canvas id="canvas" class="main" width="270" height="270"></canvas>
+	
+	<button class="btn">重玩一句</button>
 	<script type="text/javascript" src="js/jquery.js"></script>
 	<script type="text/javascript" src="js/tools.js"></script>
 	<script type="text/javascript" src="js/index.js"></script>
 	<script type="text/javascript">
 		var canvas = document.getElementById('canvas');
 		var context = canvas.getContext('2d');
-		new Game({
+		var game = new Game({
 			canvas:canvas,
 			ctx:context,
 			size:2,
 			pic:'img/270.jpg',
 			picWidth:270,
 			picHeight:270
+		});
+		$('.btn').on('click',function  () {
+			game = new Game({
+			canvas:canvas,
+			ctx:context,
+			size:2,
+			pic:'img/270.jpg',
+			picWidth:270,
+			picHeight:270
+		})
 		})
 		/*new Game({
 			canvas:canvas,
