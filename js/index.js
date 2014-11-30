@@ -11,6 +11,7 @@ function Game (obj) {
 	this.startX = 0;
 	this.startY = 0;
 	this.clickIndex = 0;
+	this.eventData = {};
 	this.init();
 }
 Game.prototype = {
@@ -19,11 +20,12 @@ Game.prototype = {
 		this.initImage();
 		this.bindEvent();
 	},
+	//初始化拼图相关数据
 	initData:function  () {
 		var self = this;
 		var conf = this.conf;
 		var size = this.size;
-		var globalRand = Math.floor(Math.random()*(size*size)+1)-1;
+		var globalRand = Math.floor(Math.random()*(size*size)+1)-1;//空格
 		this.picWidth = conf['picWidth'];
 		this.picHeight = conf['picHeight'];
 		this.globalRand = globalRand;//随机生成的位置
@@ -33,11 +35,24 @@ Game.prototype = {
 		this.offsetX = offsetX;
 		this.offsetY = offsetY;
 		this.posArr = posObj['posObjArr'];//正常顺序的位置数组 
+		console.log("初始化的位置数组",this.posArr);
 		this.lineArr = posObj['lineArr'];
-		this.randArr =  posObj['lineArr'].sort(Tools.randomsort);
-		//this.randArr =  posObj['lineArr'];
+		this.randArr =  this.getAvaiableRandArr(posObj['lineArr']);
+		console.log("随机数组",this.randArr);
 		this.rowColArr = posObj['rowColArr'];
 	},
+	//获得可解的排列数组
+	getAvaiableRandArr:function  (arr) {
+		var size = this.size;
+		var tmp = arr.slice(0);
+		var randArr = tmp.sort(Tools.randomsort);
+		console.log("空白的索引",this.globalRand);
+		while(!Tools.solvability(randArr,size)){
+			randArr = randArr.sort(Tools.randomsort);
+		}
+		return randArr;
+	},
+	//加载图片
 	initImage:function  () {
 		var self = this;
 		var pic = this.pic;
@@ -48,7 +63,6 @@ Game.prototype = {
 			var size = self.size;
 			var offsetX = self.offsetX;
 			var offsetY = self.offsetY;
-			console.log(size,offsetX,offsetY);
 			var posArr = self.posArr;
 			var randArr = self.randArr;
 			self.initDraw(posArr,randArr);
@@ -66,14 +80,12 @@ Game.prototype = {
 		var self = this;
 		var offsetX = this.offsetX;
 		var offsetY = this.offsetY;
-		posArr[globalRand]['isSpace'] = true;
+		//posArr[globalRand]['isSpace'] = true;
 		posArr.forEach(function(value,index){
 			var x = value['x'];
 			var y = value['y'];
 			var randKey = randArr[index];
 			var cur = posArr[randKey];//随机的位置，扩展对象属性
-			//cur['isSpace'] = (randKey==globalRand) ? true:false;//扩展是不是空白
-
 			value['cur'] = cur;
 			value['curIndex'] = randKey;
 			var cx = cur ? cur['x'] : 'no';
@@ -81,8 +93,10 @@ Game.prototype = {
 			value['isRight'] = (x==cx && y==cy) ? true:false;
 			var width = self['picWidth'];
 			var height = self['picHeight'];
-			if(value['isSpace']){
+			if(randKey==self.globalRand){
+				value['isSpace'] = true;
 				self.drawRect(value);
+				value['cur'] = null;//空白的截取碎片为空
 				return;
 			}
 			ctx.drawImage(img,cx,cy,offsetX,offsetY,x,y,offsetX,offsetY);
@@ -101,11 +115,15 @@ Game.prototype = {
 			self.touchStart(e);
 		},false);
 		canvas.addEventListener('touchmove',function  (e) {
-			self.touchMove(e);
+			//self.touchMove(e);
+			self.eventData = e;
+		},false);
+		canvas.addEventListener('touchend',function  (e) {
+			self.touchMove(self.eventData);
 		},false);
 	},
-	touchStart:function  (ev) {
-		ev.preventDefault();
+	touchStart:function  (event) {
+		event.preventDefault();
 		var self = this;
 		var touch = event.touches[0],
          	startX = touch.pageX,
@@ -116,8 +134,8 @@ Game.prototype = {
 	    self.clickIndex = index;
 	},
 	//移动事件，所处当前点击对象和所要移动的目的对象的索引
-	touchMove:function(ev){
-		ev.preventDefault();
+	touchMove:function(event){
+		event.preventDefault();
 		var self = this;
 		var touch = event.touches[0],
          	endX = touch.pageX,
@@ -153,8 +171,8 @@ Game.prototype = {
         if(isMove){
         	curPosObj['isSpace'] = true;
         	targetPosObj['cur'] = curPosObj['cur'];//注意这里是吧目前的位置
-        	targetPosObj['isSpace'] = false;
-
+        	//targetPosObj['isSpace'] = false;
+        	delete targetPosObj['isSpace'];
         	curPosObj['cur'] = false;//空格的截取碎片为空
         	var drawObjArr = [curPosObj,targetPosObj];
         	self.moveDraw(drawObjArr);
@@ -162,9 +180,11 @@ Game.prototype = {
 	},
 	moveDraw:function  (drawObjArr) {
 		var self = this;
+		var tmpSpace = {};
 		drawObjArr.forEach(function  (value,index) {
 			if(value['isSpace']){
 				//绘制空格
+				tmpSpace = value;
 				self.drawRect(value);
 			}else{
 				self.justDrawOne(value);
@@ -173,8 +193,15 @@ Game.prototype = {
 		var posArr = this.posArr;
 		var size = this.size;
 		var isOk = Tools.checkIsOk(posArr,size);
-		console.log(isOk);
 		if(isOk){
+			var spaceImg = posArr[self.globalRand];
+			var cx = spaceImg['x'];
+			var cy = spaceImg['y'];
+			var x = tmpSpace['x'];
+			var y = tmpSpace['y'];
+			var offsetX = self.offsetX;
+			var offsetY = self.offsetY;
+			tmpSpace && self.ctx.drawImage(self.img,cx,cy,offsetX,offsetY,x,y,offsetX,offsetY); 
 			alert("you get it!!!");
 		}
 	},
@@ -207,9 +234,7 @@ Game.prototype = {
 		var offsetX = this.offsetX;
 		var offsetY = this.offsetY;
 		ctx.beginPath();
-		ctx.strokeStyle = "blue";
+		ctx.fillStyle = "blue";
 		ctx.fillRect(x,y,offsetX,offsetY);
-		//ctx.strokeRect(x,y,110,110);
 	}
-
 }
