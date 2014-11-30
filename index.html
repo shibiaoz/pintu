@@ -11,28 +11,36 @@
 </head>
 <body>
 	<canvas id="canvas" class="main" width="270" height="270"></canvas>
+	<button class="j_btn btn">重玩一句</button>
+	<a class="btn-size btn_2 btn" data-size="2" href="./2x2.html">二阶</a>
+	<a class="btn-size btn_3 btn" data-size="3"  href="./index.html">三阶</a>
 	<script type="text/javascript" src="js/jquery.js"></script>
 	<script type="text/javascript" src="js/tools.js"></script>
 	<script type="text/javascript" src="js/index.js"></script>
 	<script type="text/javascript">
 		var canvas = document.getElementById('canvas');
 		var context = canvas.getContext('2d');
+		var  size = 3;
 		new Game({
 			canvas:canvas,
 			ctx:context,
-			size:3,
+			size:size,
 			pic:'img/270.jpg',
 			picWidth:270,
 			picHeight:270
 		})
-		/*new Game({
-			canvas:canvas,
-			ctx:context,
-			size:3,
-			pic:'img/ball_baby.jpg',
-			picWidth:330,
-			picHeight:330
-		})*/
+		$('.j_btn').on('click',function  () {
+			canvas = document.getElementById('canvas');
+			context = canvas.getContext('2d');
+			game = new Game({
+				canvas:canvas,
+				ctx:context,
+				size:size,
+				pic:'img/270.jpg',
+				picWidth:270,
+				picHeight:270
+			});
+		});
 	</script>
 </body>
 </html>
