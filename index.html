@@ -14,6 +14,7 @@
 	<button class="j_btn btn">重玩一句</button>
 	<a class="btn-size btn_2 btn" data-size="2" href="./2x2.html">二阶</a>
 	<a class="btn-size btn_3 btn" data-size="3"  href="./index.html">三阶</a>
+	<img src="img/270.jpg" class="tips">
 	<script type="text/javascript" src="js/jquery.js"></script>
 	<script type="text/javascript" src="js/tools.js"></script>
 	<script type="text/javascript" src="js/index.js"></script>
@@ -21,14 +22,16 @@
 		var canvas = document.getElementById('canvas');
 		var context = canvas.getContext('2d');
 		var  size = 3;
+		var offset = $("#canvas").offset();
 		new Game({
 			canvas:canvas,
 			ctx:context,
 			size:size,
 			pic:'img/270.jpg',
 			picWidth:270,
-			picHeight:270
-		})
+			picHeight:270,
+			pos:offset
+		});
 		$('.j_btn').on('click',function  () {
 			canvas = document.getElementById('canvas');
 			context = canvas.getContext('2d');

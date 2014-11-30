@@ -22,13 +22,15 @@
 		var canvas = document.getElementById('canvas');
 		var context = canvas.getContext('2d');
 		var size = 2;
+		var offset = $("#canvas").offset();
 		var game = new Game({
 			canvas:canvas,
 			ctx:context,
 			size:2,
 			pic:'img/270.jpg',
 			picWidth:270,
-			picHeight:270
+			picHeight:270,
+			pos:offset
 		});
 		$('.j_btn').on('click',function  () {
 			canvas = document.getElementById('canvas');

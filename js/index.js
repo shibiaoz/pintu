@@ -13,6 +13,7 @@ function Game (obj) {
 	this.clickIndex = 0;
 	this.eventData = {};
 	this.isCompleted = false;
+	this.offset = offset;
 	this.init();
 }
 Game.prototype = {
@@ -46,11 +47,14 @@ Game.prototype = {
 	getAvaiableRandArr:function  (arr) {
 		var size = this.size;
 		var tmp = arr.slice(0);
-		var randArr = tmp.sort(Tools.randomsort);
+		var globalRand = this.globalRand;
+		randArr = Tools.createRightPath(tmp,size,globalRand);
+		console.log("-----33--",randArr)
+		/*var randArr = tmp.sort(Tools.randomsort);
 		console.log("空白的索引",this.globalRand);
-		while(!Tools.solvability(randArr,size)){
+		while(!Tools.solvability(randArr,size,this.globalRand)){
 			randArr = randArr.sort(Tools.randomsort);
-		}
+		}*/
 		return randArr;
 	},
 	//加载图片
@@ -134,7 +138,7 @@ Game.prototype = {
          	startY = touch.pageY;
 	    self.startX = startX;
 	    self.startY = startY;
-	    var index = Tools.getIndex(startX,startY,self.offsetX,self.offsetY,self.rowColArr);
+	    var index = Tools.getIndex(startX,startY,self.offsetX,self.offsetY,self.rowColArr,self.offset);
 	    self.clickIndex = index;
 	},
 	//移动事件，所处当前点击对象和所要移动的目的对象的索引
@@ -210,7 +214,9 @@ Game.prototype = {
 			var offsetX = self.offsetX;
 			var offsetY = self.offsetY;
 			tmpSpace && self.ctx.drawImage(self.img,cx,cy,offsetX,offsetY,x,y,offsetX,offsetY); 
-			alert("you get it!!!");
+			setTimeout(function() {
+				alert("congratulations, you get it!!!");
+			}, 500);
 		}
 	},
 	justDrawOne:function  (onePos) {

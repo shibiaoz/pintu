@@ -48,8 +48,10 @@ var Tools = {
 
 	// returun index by event pos
 	//根据x,y坐标获得点击的碎片的索引
-	getIndex:function(x,y,offsetX,offsetY,rowColArr){
+	getIndex:function(x,y,offsetX,offsetY,rowColArr,offset){
 		var index = 0;
+		x = x - offset['left'];
+		y = y - offset['top'];
 		var rowIndex = parseInt(y/offsetX);//行号
 		var colIndex = parseInt(x/offsetY);//列号
 		var rowCol = rowIndex +"-"+ colIndex;
@@ -78,20 +80,22 @@ var Tools = {
 		console.log("检查是否已拼完",posArr,okSize);
 		return isOk;
 	},
-	solvability:function(order, size){//判断当前的拼图是否可以还原
-			// 定理1：图形A与图形B等价的充要条件图形A的排列的逆序数加上0元素行号和列号的奇偶性等于图形B的排列的逆序数加上0元素行号和列号的奇偶性。为方便表述，把图形排列的逆序数加上0元素行号和列号的奇偶性称为图形的奇偶性。
+	solvability:function(order, size,zeroRand){
+			//判断当前的拼图是否可以还原
+			// 定理1：图形A与图形B等价的充要条件图形A的排列的逆序数加上0元素行号和列号的奇偶性
+			//等于图形B的排列的逆序数加上0元素行号和列号的奇偶性。
+			//为方便表述，把图形排列的逆序数加上0元素行号和列号的奇偶性称为图形的奇偶性。
 			var a;
 			var count = 0;
 			var m = 0;
 			var n = 0;
-			
 			var len = order.length;
 			size = size || 3;
 			//[0,1,2,3,4,5,7,6,8]
 			for(var i=0; i<len; i++){
 				var a = order[i];
 				
-				if(a == 8){
+				if(a == zeroRand){
 					m = parseInt(i/size);
 					n = parseInt(i%size);
 				}
@@ -103,19 +107,78 @@ var Tools = {
 					}
 				}
 			}
-			count += m;
-			count += n;
+			console.log(order,count,m,n,"---------",(count)%2==0)
+			/*count += m;
+			count += n;*/
 			return count%2 == 0;
 		},
-		isOkay:function(){
-			var okay = true;
-			var list = this.itemList;
-			for(var i=0, len=list.length; i<len; i++){
-				if( !list[i].isOkay() ){
-					okay = false;
-					break;
-				};
+	isOkay:function(){
+		var okay = true;
+		var list = this.itemList;
+		for(var i=0, len=list.length; i<len; i++){
+			if( !list[i].isOkay() ){
+				okay = false;
+				break;
 			};
-			return okay;
-		},
+		};
+		return okay;
+	},
+	//模拟路径然后进行交换
+	createRightPath:function (lineArr,size,zeroRand){
+		var size = size || 3;
+		var step = 20;
+		var m = 0,n = 0;
+		var swap = 0;
+		var zeroIndex = 0;
+		var genRight = lineArr.slice(0);
+		for (var i = 0; i < step; i++) {
+			zeroIndex = parseInt( genRight.indexOf(zeroRand));
+			var avaiableDirect = Tools.isSwap(size,zeroIndex).slice(0);
+			var len = avaiableDirect.length;
+			if(len>0){
+				var tmpIndex = Math.floor((Math.random()*len+1))-1;
+				var tmpDirect = avaiableDirect[tmpIndex];
+				if(tmpDirect=='left'){
+					genRight[zeroIndex] = genRight[zeroIndex-1];
+					genRight[zeroIndex-1] = zeroRand;
+				}else if(tmpDirect=='right'){
+					genRight[zeroIndex]=genRight[zeroIndex+1];
+					genRight[zeroIndex+1] = zeroRand;
+				}else if(tmpDirect=='up'){
+					genRight[zeroIndex] = genRight[zeroIndex-size];
+					genRight[zeroIndex-size] = zeroRand;
+				}else if(tmpDirect=='down'){
+					genRight[zeroIndex] = genRight[zeroIndex+size];
+					genRight[zeroIndex+size] = zeroRand;
+				}
+			}
+		}
+		return genRight;
+	},
+	isSwap:function(size,index){
+		var index = parseInt(index);
+		var left = index-1;
+		var right = index+1;
+		var up = index-size;
+		var down = index+size;
+		var m = parseInt(index/size);
+		var n = parseInt(index%size);
+		var avaiableDirect = [];
+		if(left >0 && parseInt(left/size)==m  ){
+			// 可左右移动
+			avaiableDirect.push['left'];
+		}
+		if(parseInt(right/size)==m && right < size*size ){
+			avaiableDirect.push('right');
+		}
+
+		if(up>0){
+			//可上下移动
+			avaiableDirect.push('up');
+		}
+		if(down < size*size){
+			avaiableDirect.push('down')
+		}
+		return avaiableDirect;
+	}
 }
