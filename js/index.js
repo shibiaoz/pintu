@@ -12,6 +12,7 @@ function Game (obj) {
 	this.startY = 0;
 	this.clickIndex = 0;
 	this.eventData = {};
+	this.isCompleted = false;
 	this.init();
 }
 Game.prototype = {
@@ -125,6 +126,9 @@ Game.prototype = {
 	touchStart:function  (event) {
 		event.preventDefault();
 		var self = this;
+		if(self.isCompleted){
+			return ;
+		}
 		var touch = event.touches[0],
          	startX = touch.pageX,
          	startY = touch.pageY;
@@ -137,6 +141,9 @@ Game.prototype = {
 	touchMove:function(event){
 		event.preventDefault();
 		var self = this;
+		if(self.isCompleted){
+			return ;
+		}
 		var touch = event.touches[0],
          	endX = touch.pageX,
          	endY = touch.pageY;
@@ -194,6 +201,7 @@ Game.prototype = {
 		var size = this.size;
 		var isOk = Tools.checkIsOk(posArr,size);
 		if(isOk){
+			self.isCompleted = true;
 			var spaceImg = posArr[self.globalRand];
 			var cx = spaceImg['x'];
 			var cy = spaceImg['y'];
