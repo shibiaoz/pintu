@@ -48,13 +48,13 @@ Game.prototype = {
 		var size = this.size;
 		var tmp = arr.slice(0);
 		var globalRand = this.globalRand;
-		randArr = Tools.createRightPath(tmp,size,globalRand);
-		console.log("-----33--",randArr)
-		/*var randArr = tmp.sort(Tools.randomsort);
+		/*randArr = Tools.createRightPath(tmp,size,globalRand);
+		console.log("-----33--",randArr)*/
+		var randArr = tmp.sort(Tools.randomsort);
 		console.log("空白的索引",this.globalRand);
 		while(!Tools.solvability(randArr,size,this.globalRand)){
 			randArr = randArr.sort(Tools.randomsort);
-		}*/
+		}
 		return randArr;
 	},
 	//加载图片

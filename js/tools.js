@@ -108,9 +108,9 @@ var Tools = {
 				}
 			}
 			console.log(order,count,m,n,"---------",(count)%2==0)
-			/*count += m;
-			count += n;*/
-			return count%2 == 0;
+			count += m;
+			count += n;
+			return (count+parseInt(zeroRand/size)+ parseInt(zeroRand%size))%2 == 0;
 		},
 	isOkay:function(){
 		var okay = true;
@@ -180,5 +180,16 @@ var Tools = {
 			avaiableDirect.push('down')
 		}
 		return avaiableDirect;
+	},
+	//返回两个数组中顺序不同 个数
+	arrDiffCount:function  (arr1,arr2) {
+		var count = 0;
+		var len = arr1.length;
+		arr1.forEach(function  (value,index) {
+			if(value==arr2[index]){
+				count++;
+			}
+		});
+		return len - count;
 	}
 }
