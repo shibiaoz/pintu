@@ -10,15 +10,37 @@
 	<link rel="stylesheet" type="text/css" href="css/index.css">
 </head>
 <body>
-	<canvas id="canvas" class="main" width="270" height="270"></canvas>
-	<button class="j_btn btn">重玩一句</button>
-	<a class="btn-size btn_2 btn" data-size="2" href="./2x2.html">二阶</a>
-	<a class="btn-size btn_3 btn" data-size="3"  href="./index.html">三阶</a>
-	<img src="img/270.jpg" class="tips">
-	<script type="text/javascript" src="js/jquery.js"></script>
+	<div class="scroll_mask j_scroll_mask">
+		<div class="close_btn j_close_btn">X</div>
+		<div class="scroll_wraper j_scroll_wraper">
+			<img src="img/270.jpg">
+			<img src="img/yy.jpg">
+			<img src="img/270.jpg">
+		</div>
+	</div>
+	<div class="game_hud">
+		step:<span class="j_step">0</span>
+		耗时:<span class="j_time">00:00:00</span>
+	</div>
+	<div class="canvas_wraper">
+		<canvas id="canvas" class="main" width="270" height="270"></canvas>
+	</div>
+	<div class="game_op">
+		啊啊啊
+		<button class="j_btn btn">重玩一句</button>
+		<a class="btn-size btn_2 btn" data-size="2" href="./2x2.html">二阶</a>
+		<a class="btn-size btn_3 btn" data-size="3"  href="./index.html">三阶</a>
+	</div>
+	<!-- <img src="img/270.jpg" class="tips"> -->
+	<script type="text/javascript" src="js/zepto.js"></script>
 	<script type="text/javascript" src="js/tools.js"></script>
+	<script type="text/javascript" src="js/scroll.js"></script>
 	<script type="text/javascript" src="js/index.js"></script>
 	<script type="text/javascript">
+
+		new Scroll({
+			wraperId:'.j_scroll_wraper'
+		});
 		var canvas = document.getElementById('canvas');
 		var context = canvas.getContext('2d');
 		var  size = 3;

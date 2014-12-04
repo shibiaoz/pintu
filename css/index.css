@@ -1,24 +1,60 @@
+body{
+	background: url('../img/bj.jpg') no-repeat;
+	background-position: 50% 0;
+}
 
+/*scroll starts*/
+.scroll_mask{
+	text-align: center;
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 640px;/*暂且这么写*/
+	background: gray ;
+}
+.close_btn{
+	color: red;
+	font-size: 30px;
+	position: absolute;
+	top: 153px;
+	right: 25px;
+}
+.scroll_wraper{
+	position: absolute;
+	top: 185px;
+	height: 270px;
+	width: 1000px;
+	overflow: hidden;
+}
+.scroll_mask img{
+	float: left;
+}
+
+
+/*scroll ends*/
+
+
+.game_hud{
+	margin: 0 auto;
+	color: red;
+	text-align: center;
+	margin-bottom: 10px;
+}
+.canvas_wraper{
+	margin: 0 auto;
+	width: 270px;
+	height: 270px;
+}
 .main{
 	border: solid 1px red;	
 	margin: 0 auto;
-	position: absolute;
 	width: 270px;
 	height: 270px;
-	top: 0px;
-}
-.btn{
-	position: absolute;
-	top: 280px;
-}
-.btn_2{
-	left: 100px;
-}
 
-.btn_3{
-	left: 160px;
 }
-.tips{
-	position: absolute;
-	top: 300px;
+.game_op{
+	margin: 0 auto;
+	text-align: center;
+	margin-top: 10px;
 }
