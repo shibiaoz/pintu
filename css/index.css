@@ -22,7 +22,7 @@ body{
 }
 .scroll_wraper{
 	position: absolute;
-	top: 185px;
+	top: 145px;
 	height: 270px;
 	width: 1000px;
 	overflow: hidden;

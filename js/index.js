@@ -192,6 +192,9 @@ Game.prototype = {
 	moveDraw:function  (drawObjArr) {
 		var self = this;
 		var tmpSpace = {};
+		var num = parseInt( $('.j_step').text() ) + 1;
+		$('.j_step').text(num)
+		//$('.j_step') = parseInt($('.j_step').text())+1;
 		drawObjArr.forEach(function  (value,index) {
 			if(value['isSpace']){
 				//绘制空格
