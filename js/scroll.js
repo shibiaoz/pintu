@@ -37,7 +37,7 @@ Scroll.prototype ={
 			$(this).css('left',dx);
 		});
 
-		self.$close.on('tap',function  () {
+		self.$close.on('touchstart',function  () {
 			self.$wraper.parent().hide();
 		});
 	}
