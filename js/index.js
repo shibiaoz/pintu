@@ -13,7 +13,7 @@ function Game (obj) {
 	this.clickIndex = 0;
 	this.eventData = {};
 	this.isCompleted = false;
-	this.offset = offset;
+	this.offset = obj['pos'];
 	this.init();
 }
 Game.prototype = {
